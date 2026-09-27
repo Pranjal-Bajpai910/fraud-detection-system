@@ -1,240 +1,530 @@
-\# Fraud Detection System
+# 🚨 Fraud Detection System
 
+### AI-powered transaction risk assessment using machine learning
 
+An end-to-end machine learning fraud detection system built to identify potentially fraudulent credit card transactions using feature engineering, feature selection, model selection, hyperparameter tuning, threshold optimization, and deployment through **Streamlit** and **FastAPI**.
 
-An end-to-end machine learning fraud detection system built to identify potentially fraudulent credit card transactions using feature engineering, model selection, threshold optimization, and deployment through Streamlit and FastAPI.
+---
 
+## 🖥️ Application Preview
 
+### Streamlit Web Application
 
-\## 🚀 Project Overview
+The project includes an interactive Streamlit application where users can enter transaction details and receive a real-time fraud risk prediction.
 
+![Fraud Detection System - Transaction Input](assets/streamlit-input.png)
 
+### Prediction Result
 
-Fraudulent transactions are highly imbalanced compared with legitimate transactions, making fraud detection a challenging machine learning problem.
+The application returns the predicted fraud probability, decision threshold, and final classification.
 
+![Fraud Detection System - Prediction Result](assets/streamlit-result.png)
 
+---
 
-This project implements a complete ML inference workflow:
+## 🎯 Problem Statement
 
+Fraudulent credit card transactions represent only a very small percentage of total transactions, creating a highly imbalanced binary classification problem.
 
+The objective of this project is to classify each transaction as:
 
-\- Data preprocessing
+- **Legitimate**
+- **Fraudulent**
 
-\- Feature engineering
+Because of the severe class imbalance, accuracy alone is not an appropriate evaluation metric.
 
-\- Categorical encoding
+The project therefore focuses on:
 
-\- Feature selection
+- Precision
+- Recall
+- F1-score
+- PR-AUC
+- ROC-AUC
 
-\- Model selection
+---
 
-\- Hyperparameter tuning
-
-\- Cross-validation
-
-\- Model comparison
-
-\- Decision-threshold optimization
-
-\- Streamlit web application
-
-\- FastAPI REST API
-
-
-
-The final deployed model is a \*\*Logistic Regression model with log-transformed transaction amounts\*\*.
-
-
-
-\---
-
-
-
-\## 🎯 Problem Statement
-
-
-
-The objective is to classify financial transactions as:
-
-
-
-\- \*\*Legitimate\*\*
-
-\- \*\*Fraudulent\*\*
-
-
-
-The major challenge is severe class imbalance, where fraudulent transactions represent only a small fraction of the available transactions.
-
-
-
-Therefore, evaluation focuses on metrics such as:
-
-
-
-\- Precision
-
-\- Recall
-
-\- F1-score
-
-\- PR-AUC
-
-\- ROC-AUC
-
-
-
-rather than relying only on accuracy.
-
-
-
-\---
-
-
-
-\## 📊 Dataset
-
-
+## 📊 Dataset
 
 The project uses separate training and testing datasets.
 
-
-
 | Dataset | Transactions | Features |
-
 |---|---:|---:|
-
 | Training | 1,296,675 | 23 |
-
 | Testing | 555,719 | 23 |
 
-
-
-\### Class Distribution
-
-
+### Class Distribution
 
 The training dataset contains:
 
+- Legitimate transactions: **1,289,169**
+- Fraudulent transactions: **7,506**
+- Fraud rate: **0.579%**
 
+This severe class imbalance makes fraud detection substantially more challenging than ordinary binary classification.
 
-\- Legitimate transactions: \*\*1,289,169\*\*
+### Temporal Evaluation
 
-\- Fraudulent transactions: \*\*7,506\*\*
+Instead of randomly mixing future transactions into the training data, the project uses a temporal train/test split.
 
-\- Fraud rate: \*\*0.579%\*\*
-
-
-
-This severe imbalance makes fraud detection significantly harder than ordinary binary classification.
-
-
-
-\### Temporal Split
-
-
-
-The training data covers approximately:
-
-
+**Training period**
 
 `2019-01-01 → 2020-06-21`
 
-
-
-The test data covers:
-
-
+**Testing period**
 
 `2020-06-21 → 2020-12-31`
 
+This provides an **out-of-time evaluation** of model performance.
 
+---
 
-The temporal test set provides an out-of-time evaluation rather than randomly mixing future transactions into training.
-
-
-
-\---
-
-
-
-\# 🛠️ Machine Learning Pipeline
-
-
+## 🧠 Machine Learning Pipeline
 
 ```text
-
 Raw Transaction Data
-
-&#x20;       │
-
-&#x20;       ▼
-
+        │
+        ▼
 Data Cleaning
-
-&#x20;       │
-
-&#x20;       ▼
-
+        │
+        ▼
 Feature Engineering
-
-&#x20;       │
-
-&#x20;       ├── Transaction Amount
-
-&#x20;       ├── Customer Age
-
-&#x20;       ├── Card Transaction Count
-
-&#x20;       ├── Geographic Distance
-
-&#x20;       └── Cyclical Time Features
-
-&#x20;       │
-
-&#x20;       ▼
-
+        │
+        ├── Transaction Amount
+        ├── Customer Age
+        ├── Card Transaction Count
+        ├── Geographic Distance
+        └── Cyclical Time Features
+        │
+        ▼
 Categorical Encoding
-
-&#x20;       │
-
-&#x20;       ▼
-
+        │
+        ▼
 Feature Scaling
-
-&#x20;       │
-
-&#x20;       ▼
-
+        │
+        ▼
 Feature Selection
-
-&#x20;       │
-
-&#x20;       ▼
-
+        │
+        ▼
 Model Selection
-
-&#x20;       │
-
-&#x20;       ▼
-
+        │
+        ▼
 Hyperparameter Tuning
-
-&#x20;       │
-
-&#x20;       ▼
-
+        │
+        ▼
 Threshold Optimization
-
-&#x20;       │
-
-&#x20;       ▼
-
+        │
+        ▼
 Fraud Probability
-
-&#x20;       │
-
-&#x20;       ▼
-
+        │
+        ▼
 Fraud / Legitimate
 
+
+⚙️ Feature Engineering
+
+The raw transaction data was transformed into features that provide additional information about transaction behavior.
+
+Transaction Features
+Transaction amount
+Log-transformed transaction amount
+Transaction timestamp
+Customer Features
+Customer age
+Card transaction count
+Gender
+Geographic information
+City population
+Geographic Features
+
+A Haversine distance feature was created to measure the approximate distance between the customer's location and the merchant location.
+
+Time Features
+
+Transaction timestamps were transformed into:
+
+Transaction year
+Hour
+Day
+Month
+Weekday
+
+Cyclical encoding was then applied using sine and cosine transformations:
+
+hour_sin, hour_cos
+day_sin, day_cos
+month_sin, month_cos
+weekday_sin, weekday_cos
+
+This allows the model to capture the cyclic nature of time-based patterns.
+
+
+🔎 Feature Selection
+
+
+The original processed feature space contained:
+
+2,167 features
+
+A strict L1-based feature selection approach was applied using Logistic Regression.
+
+The selector reduced the feature space to:
+
+25 selected features
+
+This represents approximately:
+
+98.85% feature reduction
+
+The selected feature set was then used for the Random Forest model-selection experiments.
+
+🤖 Model Selection & AutoML
+
+The project includes an automated model-development workflow covering:
+
+Feature selection
+Model selection
+Hyperparameter tuning
+Cross-validation
+Model comparison
+Threshold optimization
+Model Comparison
+Model	Features	ROC-AUC	PR-AUC
+Clean Log Logistic Regression	2,167	0.9022	0.4790
+Initial Random Forest	25	0.9918	0.8289
+Tuned Random Forest	25	0.9937	0.8640
+Random Forest Hyperparameter Tuning
+
+Grid search with stratified 3-fold cross-validation was used to tune:
+
+Number of estimators
+Maximum tree depth
+Minimum samples per leaf
+
+Best configuration:
+
+n_estimators = 200
+max_depth = 15
+min_samples_leaf = 5
+class_weight = balanced
+
+The tuning objective was PR-AUC, which is particularly useful for highly imbalanced fraud detection.
+
+🤖 Model Selection & AutoML
+
+The project includes an automated model-development workflow covering:
+
+Feature selection
+Model selection
+Hyperparameter tuning
+Cross-validation
+Model comparison
+Threshold optimization
+Model Comparison
+Model	Features	ROC-AUC	PR-AUC
+Clean Log Logistic Regression	2,167	0.9022	0.4790
+Initial Random Forest	25	0.9918	0.8289
+Tuned Random Forest	25	0.9937	0.8640
+Random Forest Hyperparameter Tuning
+
+Grid search with stratified 3-fold cross-validation was used to tune:
+
+Number of estimators
+Maximum tree depth
+Minimum samples per leaf
+
+Best configuration:
+
+n_estimators = 200
+max_depth = 15
+min_samples_leaf = 5
+class_weight = balanced
+
+The tuning objective was PR-AUC, which is particularly useful for highly imbalanced fraud detection.
+
+
+📈 Final Model Evaluation
+
+The final model was evaluated on the temporal test set.
+
+Metric	Temporal Test
+ROC-AUC	0.8656
+PR-AUC	0.3025
+Precision	0.4729
+Recall	0.3497
+F1-score	0.4020
+Confusion Matrix
+                 Predicted
+                 Legit   Fraud
+
+Actual Legit    552738     836
+Actual Fraud      1395     750
+
+The temporal test evaluation is intentionally kept separate from threshold optimization to avoid tuning the decision threshold on the final test set.
+
+
+🎚️ Decision Threshold Optimization
+
+
+For highly imbalanced fraud detection, the default classification threshold of 0.50 is not necessarily appropriate.
+
+The decision threshold was therefore optimized on the validation set using F1-score.
+
+Final threshold:
+
+0.1789409317
+
+Approximately:
+
+17.89%
+
+A transaction is classified as fraudulent when:
+
+fraud_probability >= 0.1789409317
+
+This allows the system to make a more suitable precision/recall trade-off for the fraud detection problem.
+
+🖥️ Streamlit Deployment
+
+The trained model is integrated into an interactive Streamlit application.
+
+The application performs the complete inference workflow:
+
+User Input
+    ↓
+Feature Engineering
+    ↓
+Log Transformation
+    ↓
+Feature Scaling
+    ↓
+Categorical Encoding
+    ↓
+Model Prediction
+    ↓
+Fraud Probability
+    ↓
+Threshold Decision
+    ↓
+Fraud / Legitimate
+
+The application displays:
+
+Transaction details
+Fraud probability
+Decision threshold
+Fraud risk indicator
+Final classification
+
+⚡ FastAPI REST API
+
+The same fraud detection inference workflow is also exposed through a FastAPI REST API.
+
+The API provides a /predict endpoint that:
+
+Validates transaction data using Pydantic
+Performs feature engineering
+Applies log transformation
+Applies the saved scaler
+Applies the saved categorical encoder
+Generates the fraud probability
+Applies the optimized decision threshold
+Returns the final classification
+Swagger API
+
+FastAPI provides an interactive Swagger interface for testing the endpoint.
+
+Prediction Response
+
+The /predict endpoint returns a JSON response containing the fraud probability and classification.
+
+Example response:
+{
+  "fraud_probability": 0.000549,
+  "prediction": 0,
+  "classification": "Legitimate"
+}
+
+🏗️ System Architecture
+
+                         Fraud Detection System
+                                  │
+                    ┌─────────────┴─────────────┐
+                    │                           │
+               Streamlit                   FastAPI
+                Frontend                    REST API
+                    │                           │
+                    └─────────────┬─────────────┘
+                                  │
+                           ML Inference
+                                  │
+                    ┌─────────────┴─────────────┐
+                    │                           │
+             Feature Engineering          Saved Artifacts
+                    │                           │
+                    │                  ┌────────┼────────┐
+                    │                  │        │        │
+                    │                Model    Scaler  Encoder
+                    │                  │        │        │
+                    └──────────────────┴────────┴────────┘
+                                  │
+                           Fraud Probability
+                                  │
+                           Decision Threshold
+                                  │
+                         Fraud / Legitimate
+
+📁 Project Structure
+fraud-detection-system/
+│
+├── assets/
+│   ├── fastapi-response.png
+│   ├── fastapi-swagger.png
+│   ├── streamlit-input.png
+│   └── streamlit-result.png
+│
+├── data/
+│   ├── processed/
+│   └── raw/
+│       └── fraudTrain.csv
+│       └── fraudTest.csv
+│
+├── notebooks/
+│   ├── 01_eda.ipynb
+│   └── feature_columns.pkl
+│
+├── api.py
+├── app.py
+├── encoder.pkl
+├── final_threshold_cleanlog.txt
+├── fraud_logistic_cleanlog_model.pkl
+├── requirements.txt
+├── scaler_cleanlog.pkl
+├── .gitignore
+└── README.md
+Raw datasets are excluded from GitHub through .gitignore because of their large file sizes.
+
+🛠️ Tech Stack
+
+Programming
+Python
+Data Science
+NumPy
+Pandas
+SciPy
+Matplotlib
+Machine Learning
+Scikit-learn
+Logistic Regression
+Random Forest
+L1-based feature selection
+GridSearchCV
+Stratified cross-validation
+Deployment
+Streamlit
+FastAPI
+Uvicorn
+Pydantic
+Model Persistence
+Joblib
+Development
+Jupyter Notebook
+VS Code
+Git
+GitHub
+
+
+🚀 Installation
+
+Clone the repository:
+
+git clone https://github.com/Pranjal-Bajpai910/fraud-detection-system.git
+cd fraud-detection-system
+
+Create a virtual environment:
+
+python -m venv .venv
+
+Activate it on Windows:
+
+.venv\Scripts\activate
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+▶️ Run the Streamlit Application
+streamlit run app.py
+
+The application will open in the browser.
+
+▶️ Run the FastAPI Server
+uvicorn api:app --reload
+
+Open the interactive API documentation:
+
+http://127.0.0.1:8000/docs
+
+📦 Saved Model Artifacts
+
+The repository contains the artifacts required for inference:
+
+Artifact	Purpose
+fraud_logistic_cleanlog_model.pkl	Trained Logistic Regression model
+scaler_cleanlog.pkl	Numerical feature scaler
+encoder.pkl	Categorical feature encoder
+feature_columns.pkl	Feature configuration
+final_threshold_cleanlog.txt	Optimized classification threshold
+
+⚠️ Limitations
+Fraud detection is affected by severe class imbalance.
+Model performance decreases on the temporal test set compared with validation performance, highlighting distribution shift over time.
+The deployed Logistic Regression model is intentionally simpler than the tuned Random Forest explored during model selection.
+Very large transaction amounts outside the training distribution should be treated cautiously because they represent out-of-distribution inputs.
+The system is a portfolio/academic machine learning project and is not intended for real financial decision-making without additional validation, monitoring, security, and compliance controls.
+
+🔮 Future Improvements
+
+Potential future improvements include:
+
+Advanced ensemble models
+Gradient boosting methods
+Better temporal behavioral features
+Transaction velocity features
+Per-card behavioral baselines
+Probability calibration
+Model monitoring
+Drift detection
+Explainable AI using SHAP
+Containerization with Docker
+Cloud deployment
+Automated model retraining
+
+💡 Key Learning Outcomes
+
+This project provided practical experience with:
+
+Imbalanced classification
+Feature engineering
+High-cardinality categorical encoding
+Feature selection
+Model selection
+Hyperparameter tuning
+Cross-validation
+Precision-recall trade-offs
+Decision threshold optimization
+Temporal model evaluation
+ML model persistence
+Streamlit deployment
+REST API development with FastAPI
+Git and GitHub project management
+
+
+👨‍💻 Author
+
+Pranjal Bajpai
+
+B.Tech — Computer Science
+
+Interested in Data Science, Machine Learning, and Generative AI.
+
+⭐ If you found this project useful, consider giving the repository a star.
