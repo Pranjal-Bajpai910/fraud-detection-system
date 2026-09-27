@@ -1,8 +1,14 @@
+<div align="center">
+
 # 🚨 Fraud Detection System
 
-### AI-powered transaction risk assessment using machine learning
+### AI-Powered Transaction Risk Assessment Using Machine Learning
 
-An end-to-end machine learning fraud detection system built to identify potentially fraudulent credit card transactions using feature engineering, feature selection, model selection, hyperparameter tuning, threshold optimization, and deployment through **Streamlit** and **FastAPI**.
+An end-to-end machine learning fraud detection system for identifying potentially fraudulent credit card transactions using feature engineering, feature selection, model selection, hyperparameter tuning, threshold optimization, Streamlit, and FastAPI.
+
+**Python • Scikit-learn • Streamlit • FastAPI**
+
+</div>
 
 ---
 
@@ -10,15 +16,15 @@ An end-to-end machine learning fraud detection system built to identify potentia
 
 ### Streamlit Web Application
 
-The project includes an interactive Streamlit application where users can enter transaction details and receive a real-time fraud risk prediction.
+The system provides an interactive interface for entering transaction details and receiving a real-time fraud risk prediction.
 
-![Fraud Detection System - Transaction Input](assets/streamlit-input.png)
+![Streamlit Transaction Input](assets/streamlit-input.png)
 
 ### Prediction Result
 
-The application returns the predicted fraud probability, decision threshold, and final classification.
+The application returns the fraud probability, decision threshold, and final classification.
 
-![Fraud Detection System - Prediction Result](assets/streamlit-result.png)
+![Streamlit Prediction Result](assets/streamlit-result.png)
 
 ---
 
@@ -315,29 +321,36 @@ Decision threshold
 Fraud risk indicator
 Final classification
 
-⚡ FastAPI REST API
+## ⚡ FastAPI REST API
 
-The same fraud detection inference workflow is also exposed through a FastAPI REST API.
+The same fraud detection inference workflow is exposed through a FastAPI REST API.
 
-The API provides a /predict endpoint that:
+The `/predict` endpoint:
 
-Validates transaction data using Pydantic
-Performs feature engineering
-Applies log transformation
-Applies the saved scaler
-Applies the saved categorical encoder
-Generates the fraud probability
-Applies the optimized decision threshold
-Returns the final classification
-Swagger API
+1. Validates transaction data using Pydantic
+2. Performs feature engineering
+3. Applies log transformation
+4. Applies the saved scaler
+5. Applies the saved categorical encoder
+6. Generates the fraud probability
+7. Applies the optimized decision threshold
+8. Returns the final classification
 
-FastAPI provides an interactive Swagger interface for testing the endpoint.
+### Swagger API
 
-Prediction Response
+FastAPI provides an interactive Swagger interface for testing the fraud detection endpoint.
 
-The /predict endpoint returns a JSON response containing the fraud probability and classification.
+![FastAPI Swagger UI](assets/fastapi-swagger.png)
+
+### Prediction Response
+
+The `/predict` endpoint returns the fraud probability, prediction, and final classification.
+
+![FastAPI Prediction Response](assets/fastapi-response.png)
 
 Example response:
+
+```json
 {
   "fraud_probability": 0.000549,
   "prediction": 0,
