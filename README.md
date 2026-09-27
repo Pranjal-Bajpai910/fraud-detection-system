@@ -130,16 +130,20 @@ Fraud / Legitimate
 
 The raw transaction data was transformed into features that provide additional information about transaction behavior.
 
-Transaction Features
-Transaction amount
-Log-transformed transaction amount
-Transaction timestamp
-Customer Features
-Customer age
-Card transaction count
-Gender
-Geographic information
-City population
+### Transaction Features
+
+- Transaction amount
+- Log-transformed transaction amount
+- Transaction timestamp
+
+### Customer Features
+
+- Customer age
+- Card transaction count
+- Gender
+- Geographic information
+- City population
+
 Geographic Features
 
 A Haversine distance feature was created to measure the approximate distance between the customer's location and the merchant location.
@@ -193,11 +197,14 @@ Hyperparameter tuning
 Cross-validation
 Model comparison
 Threshold optimization
-Model Comparison
-Model	Features	ROC-AUC	PR-AUC
-Clean Log Logistic Regression	2,167	0.9022	0.4790
-Initial Random Forest	25	0.9918	0.8289
-Tuned Random Forest	25	0.9937	0.8640
+
+### Model Comparison
+
+| Model | Features | ROC-AUC | PR-AUC |
+|---|---:|---:|---:|
+| Clean Log Logistic Regression | 2,167 | 0.9022 | 0.4790 |
+| Initial Random Forest | 25 | 0.9918 | 0.8289 |
+| Tuned Random Forest | 25 | 0.9937 | 0.8640 |
 Random Forest Hyperparameter Tuning
 
 Grid search with stratified 3-fold cross-validation was used to tune:
@@ -215,22 +222,10 @@ class_weight = balanced
 
 The tuning objective was PR-AUC, which is particularly useful for highly imbalanced fraud detection.
 
-🤖 Model Selection & AutoML
+### 🤖 Model Selection & AutoML
 
 The project includes an automated model-development workflow covering:
 
-Feature selection
-Model selection
-Hyperparameter tuning
-Cross-validation
-Model comparison
-Threshold optimization
-Model Comparison
-Model	Features	ROC-AUC	PR-AUC
-Clean Log Logistic Regression	2,167	0.9022	0.4790
-Initial Random Forest	25	0.9918	0.8289
-Tuned Random Forest	25	0.9937	0.8640
-Random Forest Hyperparameter Tuning
 
 Grid search with stratified 3-fold cross-validation was used to tune:
 
@@ -245,10 +240,9 @@ max_depth = 15
 min_samples_leaf = 5
 class_weight = balanced
 
-The tuning objective was PR-AUC, which is particularly useful for highly imbalanced fraud detection.
 
 
-📈 Final Model Evaluation
+###  📈 Final Model Evaluation
 
 The final model was evaluated on the temporal test set.
 
@@ -258,17 +252,18 @@ PR-AUC	0.3025
 Precision	0.4729
 Recall	0.3497
 F1-score	0.4020
-Confusion Matrix
-                 Predicted
-                 Legit   Fraud
 
-Actual Legit    552738     836
-Actual Fraud      1395     750
+###  Confusion Matrix
+
+| Actual / Predicted | Legit | Fraud |
+|---|---:|---:|
+| Legit | 552,738 | 836 |
+| Fraud | 1,395 | 750 |
 
 The temporal test evaluation is intentionally kept separate from threshold optimization to avoid tuning the decision threshold on the final test set.
 
 
-🎚️ Decision Threshold Optimization
+###  🎚️ Decision Threshold Optimization
 
 
 For highly imbalanced fraud detection, the default classification threshold of 0.50 is not necessarily appropriate.
@@ -289,7 +284,7 @@ fraud_probability >= 0.1789409317
 
 This allows the system to make a more suitable precision/recall trade-off for the fraud detection problem.
 
-🖥️ Streamlit Deployment
+###  🖥️ Streamlit Deployment
 
 The trained model is integrated into an interactive Streamlit application.
 
@@ -357,36 +352,42 @@ Example response:
   "classification": "Legitimate"
 }
 
-🏗️ System Architecture
 
+````markdown
+## 🏗️ System Architecture
+
+```text
                          Fraud Detection System
                                   │
-                    ┌─────────────┴─────────────┐
-                    │                           │
-               Streamlit                   FastAPI
-                Frontend                    REST API
-                    │                           │
-                    └─────────────┬─────────────┘
-                                  │
-                           ML Inference
-                                  │
-                    ┌─────────────┴─────────────┐
-                    │                           │
-             Feature Engineering          Saved Artifacts
-                    │                           │
-                    │                  ┌────────┼────────┐
-                    │                  │        │        │
-                    │                Model    Scaler  Encoder
-                    │                  │        │        │
-                    └──────────────────┴────────┴────────┘
-                                  │
-                           Fraud Probability
-                                  │
-                           Decision Threshold
-                                  │
-                         Fraud / Legitimate
+                     ┌─────────────┴─────────────┐
+                     │                           │
+                Streamlit                   FastAPI
+                 Frontend                    REST API
+                     │                           │
+                     └─────────────┬─────────────┘
+                                   │
+                              ML Inference
+                                   │
+                     ┌─────────────┴─────────────┐
+                     │                           │
+              Feature Engineering          Saved Artifacts
+                     │                           │
+                     │                  ┌────────┼────────┐
+                     │                  │        │        │
+                     │                Model    Scaler  Encoder
+                     │                  │        │        │
+                     └──────────────────┴────────┴────────┘
+                                   │
+                              Fraud Probability
+                                   │
+                              Decision Threshold
+                                   │
+                            Fraud / Legitimate
 
-📁 Project Structure
+````markdown
+## 📁 Project Structure
+
+```text
 fraud-detection-system/
 │
 ├── assets/
@@ -398,7 +399,7 @@ fraud-detection-system/
 ├── data/
 │   ├── processed/
 │   └── raw/
-│       └── fraudTrain.csv
+│       ├── fraudTrain.csv
 │       └── fraudTest.csv
 │
 ├── notebooks/
@@ -414,70 +415,83 @@ fraud-detection-system/
 ├── scaler_cleanlog.pkl
 ├── .gitignore
 └── README.md
+```
+
 Raw datasets are excluded from GitHub through .gitignore because of their large file sizes.
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
 
-Programming
-Python
-Data Science
-NumPy
-Pandas
-SciPy
-Matplotlib
-Machine Learning
-Scikit-learn
-Logistic Regression
-Random Forest
-L1-based feature selection
-GridSearchCV
-Stratified cross-validation
-Deployment
-Streamlit
-FastAPI
-Uvicorn
-Pydantic
-Model Persistence
-Joblib
-Development
-Jupyter Notebook
-VS Code
-Git
-GitHub
+### Programming
+- Python
 
+### Data Science
+- NumPy
+- Pandas
+- SciPy
+- Matplotlib
 
-🚀 Installation
+### Machine Learning
+- Scikit-learn
+- Logistic Regression
+- Random Forest
+- L1-based feature selection
+- GridSearchCV
+- Stratified cross-validation
 
-Clone the repository:
+### Deployment
+- Streamlit
+- FastAPI
+- Uvicorn
+- Pydantic
 
+### Model Persistence
+- Joblib
+
+### Development
+- Jupyter Notebook
+- VS Code
+- Git
+- GitHub
+
+## 🚀 Installation
+
+### Clone the repository
+
+```bash
 git clone https://github.com/Pranjal-Bajpai910/fraud-detection-system.git
 cd fraud-detection-system
+```
 
-Create a virtual environment:
+### Create a virtual environment
 
+```bash
 python -m venv .venv
+```
 
-Activate it on Windows:
+### Activate it on Windows
 
+```bash
 .venv\Scripts\activate
+```
 
-Install dependencies:
+### Install dependencies
 
+```bash
 pip install -r requirements.txt
+```
+## ▶️ Run the Streamlit Application
 
-▶️ Run the Streamlit Application
+```bash
 streamlit run app.py
 
-The application will open in the browser.
-
-▶️ Run the FastAPI Server
+## ▶️ Run the FastAPI Server
 uvicorn api:app --reload
 
 Open the interactive API documentation:
 
 http://127.0.0.1:8000/docs
 
-📦 Saved Model Artifacts
+## 📦 Saved Model Artifacts
 
 The repository contains the artifacts required for inference:
 
@@ -488,14 +502,14 @@ encoder.pkl	Categorical feature encoder
 feature_columns.pkl	Feature configuration
 final_threshold_cleanlog.txt	Optimized classification threshold
 
-⚠️ Limitations
+## ⚠️ Limitations
 Fraud detection is affected by severe class imbalance.
 Model performance decreases on the temporal test set compared with validation performance, highlighting distribution shift over time.
 The deployed Logistic Regression model is intentionally simpler than the tuned Random Forest explored during model selection.
 Very large transaction amounts outside the training distribution should be treated cautiously because they represent out-of-distribution inputs.
 The system is a portfolio/academic machine learning project and is not intended for real financial decision-making without additional validation, monitoring, security, and compliance controls.
 
-🔮 Future Improvements
+## 🔮 Future Improvements
 
 Potential future improvements include:
 
@@ -512,7 +526,7 @@ Containerization with Docker
 Cloud deployment
 Automated model retraining
 
-💡 Key Learning Outcomes
+## 💡 Key Learning Outcomes
 
 This project provided practical experience with:
 
@@ -532,7 +546,7 @@ REST API development with FastAPI
 Git and GitHub project management
 
 
-👨‍💻 Author
+## 👨‍💻 Author
 
 Pranjal Bajpai
 
