@@ -86,7 +86,7 @@ This provides an **out-of-time evaluation** of model performance.
 
 ## 🧠 Machine Learning Pipeline
 
-```text
+
 Raw Transaction Data
         │
         ▼
@@ -126,7 +126,7 @@ Fraud Probability
 Fraud / Legitimate
 
 
-⚙️ Feature Engineering
+## ⚙️ Feature Engineering
 
 The raw transaction data was transformed into features that provide additional information about transaction behavior.
 
@@ -136,7 +136,7 @@ The raw transaction data was transformed into features that provide additional i
 - Log-transformed transaction amount
 - Transaction timestamp
 
-### Customer Features
+## Customer Features
 
 - Customer age
 - Card transaction count
@@ -144,7 +144,7 @@ The raw transaction data was transformed into features that provide additional i
 - Geographic information
 - City population
 
-Geographic Features
+## Geographic Features
 
 A Haversine distance feature was created to measure the approximate distance between the customer's location and the merchant location.
 
@@ -168,7 +168,7 @@ weekday_sin, weekday_cos
 This allows the model to capture the cyclic nature of time-based patterns.
 
 
-🔎 Feature Selection
+## 🔎 Feature Selection
 
 
 The original processed feature space contained:
@@ -187,7 +187,7 @@ This represents approximately:
 
 The selected feature set was then used for the Random Forest model-selection experiments.
 
-🤖 Model Selection & AutoML
+## 🤖 Model Selection & AutoML
 
 The project includes an automated model-development workflow covering:
 
@@ -345,7 +345,7 @@ The `/predict` endpoint returns the fraud probability, prediction, and final cla
 
 Example response:
 
-```json
+json
 {
   "fraud_probability": 0.000549,
   "prediction": 0,
@@ -353,10 +353,9 @@ Example response:
 }
 
 
-````markdown
-## 🏗️ System Architecture
+##  🏗️ System Architecture
 
-```text
+
                          Fraud Detection System
                                   │
                      ┌─────────────┴─────────────┐
@@ -384,10 +383,9 @@ Example response:
                                    │
                             Fraud / Legitimate
 
-````markdown
+
 ## 📁 Project Structure
 
-```text
 fraud-detection-system/
 │
 ├── assets/
@@ -415,7 +413,7 @@ fraud-detection-system/
 ├── scaler_cleanlog.pkl
 ├── .gitignore
 └── README.md
-```
+
 
 Raw datasets are excluded from GitHub through .gitignore because of their large file sizes.
 
