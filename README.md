@@ -222,36 +222,22 @@ class_weight = balanced
 
 The tuning objective was PR-AUC, which is particularly useful for highly imbalanced fraud detection.
 
-### 🤖 Model Selection & AutoML
 
-The project includes an automated model-development workflow covering:
+### 📈 Final Model Evaluation
 
+The deployed Logistic Regression model was evaluated on the final temporal test set.
 
-Grid search with stratified 3-fold cross-validation was used to tune:
+| Metric | Temporal Test |
+|---|---:|
+| ROC-AUC | 0.8656 |
+| PR-AUC | 0.3025 |
+| Precision | 0.4729 |
+| Recall | 0.3497 |
+| F1-score | 0.4020 |
 
-Number of estimators
-Maximum tree depth
-Minimum samples per leaf
+**Note:** Cross-validation performance and temporal test performance represent different evaluation settings. The temporal test simulates future unseen transactions and shows a significant performance drop, suggesting distribution shift between the training/validation period and the later test period.
 
-Best configuration:
-
-n_estimators = 200
-max_depth = 15
-min_samples_leaf = 5
-class_weight = balanced
-
-
-
-###  📈 Final Model Evaluation
-
-The final model was evaluated on the temporal test set.
-
-Metric	Temporal Test
-ROC-AUC	0.8656
-PR-AUC	0.3025
-Precision	0.4729
-Recall	0.3497
-F1-score	0.4020
+The final temporal test set was kept separate from threshold optimization to avoid test-set leakage.
 
 ###  Confusion Matrix
 
@@ -345,12 +331,13 @@ The `/predict` endpoint returns the fraud probability, prediction, and final cla
 
 Example response:
 
-json
+```json
 {
   "fraud_probability": 0.000549,
   "prediction": 0,
   "classification": "Legitimate"
 }
+```
 
 
 ##  🏗️ System Architecture
@@ -499,56 +486,52 @@ http://127.0.0.1:8000/docs
 
 The repository contains the artifacts required for inference:
 
-Artifact	Purpose
-fraud_logistic_cleanlog_model.pkl	Trained Logistic Regression model
-scaler_cleanlog.pkl	Numerical feature scaler
-encoder.pkl	Categorical feature encoder
-feature_columns.pkl	Feature configuration
-final_threshold_cleanlog.txt	Optimized classification threshold
+| Artifact | Purpose |
+|---|---|
+| `fraud_logistic_cleanlog_model.pkl` | Trained Logistic Regression model |
+| `scaler_cleanlog.pkl` | Numerical feature scaler |
+| `encoder.pkl` | Categorical feature encoder |
+| `feature_columns.pkl` | Feature configuration |
+| `final_threshold_cleanlog.txt` | Optimized classification threshold |
 
 ## ⚠️ Limitations
-Fraud detection is affected by severe class imbalance.
-Model performance decreases on the temporal test set compared with validation performance, highlighting distribution shift over time.
-The deployed Logistic Regression model is intentionally simpler than the tuned Random Forest explored during model selection.
-Very large transaction amounts outside the training distribution should be treated cautiously because they represent out-of-distribution inputs.
-The system is a portfolio/academic machine learning project and is not intended for real financial decision-making without additional validation, monitoring, security, and compliance controls.
+
+- **Severe class imbalance:** Fraud detection is affected by severe class imbalance.
+- **Temporal distribution shift:** Model performance decreases on the temporal test set compared with validation performance, highlighting distribution shift over time.
+- **Model complexity:** The deployed Logistic Regression model is intentionally simpler than the tuned Random Forest explored during model selection.
+- **Out-of-distribution inputs:** Very large transaction amounts outside the training distribution should be treated cautiously because they represent out-of-distribution inputs.
+- **Real-world usage:** The system is a portfolio/academic machine learning project and is not intended for real financial decision-making without additional validation, monitoring, security, and compliance controls.
 
 ## 🔮 Future Improvements
 
 Potential future improvements include:
 
-Advanced ensemble models
-Gradient boosting methods
-Better temporal behavioral features
-Transaction velocity features
-Per-card behavioral baselines
-Probability calibration
-Model monitoring
-Drift detection
-Explainable AI using SHAP
-Containerization with Docker
-Cloud deployment
-Automated model retraining
+- **Advanced ensemble models** — Gradient Boosting / XGBoost
+- **Behavioral & temporal features** — transaction velocity and per-card spending patterns
+- **Probability calibration** — improve reliability of fraud probabilities
+- **Model monitoring & drift detection** — track performance and distribution changes
+- **Explainable AI** — use SHAP to explain model predictions
+- **Scalable deployment & retraining** — Docker, cloud deployment, and automated model updates
 
 ## 💡 Key Learning Outcomes
 
 This project provided practical experience with:
 
-Imbalanced classification
-Feature engineering
-High-cardinality categorical encoding
-Feature selection
-Model selection
-Hyperparameter tuning
-Cross-validation
-Precision-recall trade-offs
-Decision threshold optimization
-Temporal model evaluation
-ML model persistence
-Streamlit deployment
-REST API development with FastAPI
-Git and GitHub project management
-
+- **Imbalanced classification**
+- **Feature engineering**
+- **High-cardinality categorical encoding**
+- **Feature selection**
+- **Model selection**
+- **Hyperparameter tuning**
+- **Cross-validation**
+- **Precision-recall trade-offs**
+- **Decision threshold optimization**
+- **Temporal model evaluation**
+- **ML model persistence**
+- **Streamlit deployment**
+- **REST API development with FastAPI**
+- **Git and GitHub project management**
+One more thing: your Saved Model A
 
 ## 👨‍💻 Author
 
