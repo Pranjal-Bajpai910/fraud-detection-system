@@ -483,13 +483,19 @@ pip install -r requirements.txt
 
 ```bash
 streamlit run app.py
+```
 
 ## ▶️ Run the FastAPI Server
+```bash
 uvicorn api:app --reload
+```
 
+```text
 Open the interactive API documentation:
+```
 
 http://127.0.0.1:8000/docs
+
 
 ## 📦 Saved Model Artifacts
 
@@ -548,9 +554,9 @@ Git and GitHub project management
 
 ## 👨‍💻 Author
 
-Pranjal Bajpai
+**Pranjal Bajpai**
 
-B.Tech — Computer Science
+**B.Tech — Computer Science**
 
 Interested in Data Science, Machine Learning, and Generative AI.
 
